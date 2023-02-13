@@ -1,13 +1,13 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-
-import { useAuth } from '../context/auth';
-import { API } from '../config';
 
 export default function Register() {
     const emailInput = useRef();
     const passwordInput = useRef();
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     async function handleSubmit (e) {
         e.preventDefault();
@@ -15,21 +15,29 @@ export default function Register() {
         const email = emailInput.current;
         const password = passwordInput.current;
 
-        if(!email.value || !password.value) return;
+        if(!email.value) return toast.error("Email and password are required");
+        if(!password.value) return toast.error("Password is required");
+        setLoading(true);
         try {
             const { data } = await axios.post(`/pre-register`, { 
                 email: email.value, 
                 password: password.value 
             });
             password.value = "";
+            setLoading(false);
 
+            // for email & password input errors
             if(data?.error) return toast.error(data.error);
-    
+            // for other errors
+            if(!data.ok) return toast.error("Something wrong went wrong. Please try again");
+            
             toast.success("Please check your email to activate your account");
-            email.value = "";
+            navigate("/");
             
         } catch (err) {
             console.log(err);
+            setLoading(false);
+            // for server failure error
             toast.error("Something went wrong. Please try again.");
         }
     } 
@@ -59,10 +67,12 @@ export default function Register() {
                                 ref={passwordInput}
                             />
                             <button 
-                                className="btn btn-primary col-12 my-4"
+                                className="btn btn-primary w-100 my-4"
+                                type="submit"
                                 onClick={handleSubmit}
+                                disabled={loading}
                             >
-                                REGISTER
+                                {loading ? 'WAITING...' : 'REGISTER'}
                             </button>
                         </form>
                     </div>
