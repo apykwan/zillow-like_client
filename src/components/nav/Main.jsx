@@ -21,10 +21,20 @@ export default function Main() {
 
     const loggedIn = auth.user !== null && auth.token !== "" && auth.refreshToken !== "";
 
+    function handlePostAdClick() {
+        if(loggedIn) {
+            navigate("/ad/create");
+        } else {
+            navigate("/login");
+        }
+    }
+
     return(
         <nav className="nav p-2 d-flex justify-content-between">
             <div className="d-flex flex-row">
                 <NavLink className="nav-link" aria-current="page" to="/">Home</NavLink>
+                {loggedIn && <NavLink className="nav-link" to="/ad/create">Post Ad</NavLink>}
+                
                 {!loggedIn && <>
                     <NavLink className="nav-link" to="/login">Login</NavLink>
                     <NavLink className="nav-link" to="/register">Register</NavLink>
@@ -44,7 +54,7 @@ export default function Main() {
                         </li>
                         <li>
                             <a 
-                                className="nav-link nav-logout"
+                                className="nav-link pointer"
                                 onClick={logout}
                                 disabled={auth.user}
                             >

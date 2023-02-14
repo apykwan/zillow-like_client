@@ -2,3 +2,11 @@
     color: white;
     background-color: #2196f3;
 }
+
+.pointer {
+    cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+    background-color: rgba(33, 150, 243, 0.2);
+}
