@@ -11,3 +11,7 @@
     background-color: #2196f3;
     outline: none;
 }
+
+.nav-logout {
+    cursor: pointer !important; 
+}

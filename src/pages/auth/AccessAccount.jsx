@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 
 import { useAuth } from '../../context/auth';
 
-export default function AccountActivate() {
+export default function AccessAccount() {
     const [auth, setAuth] = useAuth();
     const { token } = useParams();
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function AccountActivate() {
 
     async function requestActivation() {
         try {
-            const { data } = await axios.post('/register', { token });
+            const { data } = await axios.post('/access-account', { resetCode: token });
             if(data?.error) {
                 toast.error(data.error);
                 navigate("/");
@@ -27,7 +27,7 @@ export default function AccountActivate() {
             localStorage.setItem('zl-auth', JSON.stringify(data));
             // save in context
             setAuth(data);
-            toast.success('Successfully logged in. Welcom to Zillow Like App');
+            toast.success('Plesae update your password in profile page');
             navigate("/");
         } catch(err) {
             console.log(err);
@@ -38,7 +38,7 @@ export default function AccountActivate() {
 
     return (
         <div className="display-1 d-flex justify-content-center align-items-center vh-100">
-            Activating, Please Wait...
+            Accessing, Please Wait...
         </div>
     );
 }

@@ -1,37 +1,32 @@
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-export default function Register() {
+export default function Login() {
     const emailInput = useRef();
-    const passwordInput = useRef();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     async function handleSubmit (e) {
         e.preventDefault();
-
         const email = emailInput.current;
-        const password = passwordInput.current;
+
 
         if(!email.value) return toast.error("Email and password are required");
-        if(!password.value) return toast.error("Password is required");
+
         setLoading(true);
         try {
-            const { data } = await axios.post(`/pre-register`, { 
-                email: email.value, 
-                password: password.value 
+            const { data } = await axios.post('/forgot-password', { 
+                email: email.value
             });
-            password.value = "";
+
             setLoading(false);
 
             // for email & password input errors
             if(data?.error) return toast.error(data.error);
-            // for other errors
-            if(!data.ok) return toast.error("Something wrong went wrong. Please try again later");
-            
-            toast.success("Please check your email to activate your account");
+
+            toast.success("Please check your email for password reset link");
             navigate("/");
             
         } catch (err) {
@@ -44,7 +39,7 @@ export default function Register() {
 
     return (
         <div>
-            <h1 className="display-1 bg-primary text-light p-5">Register</h1>
+            <h1 className="display-1 bg-primary text-light p-5">Forgot Password</h1>
         
             <div className="container mt-4">
                 <div className="row">
@@ -58,23 +53,17 @@ export default function Register() {
                                 autoFocus
                                 ref={emailInput}
                             />
-                            <input 
-                                type="password" 
-                                placeholder="Enter your password" 
-                                className="form-control mb-4" 
-                                required
-                                autoFocus
-                                ref={passwordInput}
-                            />
                             <button 
                                 className="btn btn-primary w-100 my-4"
                                 type="submit"
                                 onClick={handleSubmit}
                                 disabled={loading}
                             >
-                                {loading ? 'WAITING...' : 'REGISTER'}
+                                {loading ? 'WAITING...' : 'SUBMIT'}
                             </button>
                         </form>
+
+                        <Link className="text-info" to="/login">Back to login</Link>
                     </div>
                 </div>
             </div>
