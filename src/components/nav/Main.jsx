@@ -48,7 +48,7 @@ export default function Main() {
                     >
                         {auth?.user?.name ? auth.user.name : auth.user.username}
                     </button>
-                    <ul className="dropdown-menu">
+                    <ul className="dropdown-menu mt-1">
                         <li>
                             <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
                         </li>
