@@ -49,17 +49,11 @@ export default function Main() {
                         {auth?.user?.name ? auth.user.name : auth.user.username}
                     </button>
                     <ul className="dropdown-menu mt-1">
-                        <li>
+                        <li className="p-1">
                             <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
                         </li>
-                        <li>
-                            <a 
-                                className="nav-link pointer"
-                                onClick={logout}
-                                disabled={auth.user}
-                            >
-                                Logout
-                            </a>
+                        <li className="p-1">
+                            <a className="nav-link pointer" onClick={logout}>Logout</a>
                         </li>
                     </ul>
                 </li>

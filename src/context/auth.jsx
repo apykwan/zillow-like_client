@@ -36,7 +36,6 @@ const AuthProvider = ({ children }) => {
             
                     try {
                         const { data } = await axios.get("/refresh-token");
-                        console.log("axios", data);
                         axios.defaults.headers.common["token"] = data.token;
                         axios.defaults.headers.common["refresh_token"] = data.refreshToken;
                 

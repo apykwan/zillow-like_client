@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
+import { AuthProvider } from './context/auth';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -11,7 +12,10 @@ import Dashboard from './pages/user/Dashboard';
 import AdCreate from './pages/user/ad/AdCreate';
 import Main from './components/nav/Main';
 import PrivateRoute from './components/routes/PrivateRoute';
-import { AuthProvider } from './context/auth';
+import SellHouse from './pages/user/ad/SellHouse';
+import SellLand from './pages/user/ad/SellLand';
+import RentHouse from './pages/user/ad/RentHouse';
+import RentLand from './pages/user/ad/RentLand';
 
 export default function App() {
 	return (
@@ -29,6 +33,10 @@ export default function App() {
 					<Route path="/" element={<PrivateRoute />}>
 						<Route path="dashboard" element={<Dashboard />} />
 						<Route path="ad/create" element={<AdCreate />} />
+						<Route path="ad/create/Sell/House" element={<SellHouse />} />
+						<Route path="ad/create/Sell/Land" element={<SellLand />} />
+						<Route path="ad/create/Rent/House" element={<RentHouse />} />
+						<Route path="ad/create/Rent/Land" element={<RentLand />} />
 					</Route>
 				</Routes>
 			</AuthProvider>
