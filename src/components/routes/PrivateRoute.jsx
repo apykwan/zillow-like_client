@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import toast from 'react-hot-toast'
 import axios from 'axios';
 
 import { useAuth } from '../../context/auth';
@@ -22,6 +23,7 @@ export default function PrivateRoute() {
             setOk(true);
         } catch (err) {
             setOk(false);
+            toast.error("Please refresh the page.");
         }
     }
 

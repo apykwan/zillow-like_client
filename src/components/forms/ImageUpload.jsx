@@ -16,7 +16,7 @@ export default function ImageUpload({ ad, setAd }) {
                         Resizer.imageFileResizer(
                             file,
                             1080,
-                            72,
+                            720,
                             "JPEG",
                             100,
                             0,

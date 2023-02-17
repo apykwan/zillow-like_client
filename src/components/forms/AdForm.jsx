@@ -37,6 +37,7 @@ export default function AdForm({ action, type }) {
         type,
         action,
     });
+    const navigate = useNavigate();
 
     function onChange(field) {
         return function(event) {
@@ -53,18 +54,20 @@ export default function AdForm({ action, type }) {
             return toast.error("Photo, Address, Size of Land, Title, and Description are required!");
         }
 
-        // add sqft to landsize if no unit has been provided
         if(/^\d+$/.test(ad?.landsize) && !ad?.landsize.includes("sqft")) {
-            setAd(prev => ({
+            const landsizeUnit = `${ad?.landsize}sqft`;
+            setAd(prev=> ({
                 ...prev, 
-                landsize: `${prev.landsize}sqft` 
+                landsize: landsizeUnit 
             }));
+            console.log('landsize updated', ad.landsize)
         }
-
+       
         try {
             setAd({ ...ad, loading: true });
             const { data } = await axios.post('/ad', ad);
-            console.log(data);
+            navigate("/dashboard");
+
             if(data?.error) {
                 toast.error(data.error);
                 setAd({...ad, loading: false });
@@ -115,6 +118,7 @@ export default function AdForm({ action, type }) {
                 onValueChange={(value) => setAd({ ...ad, price: value })}
             />
 
+            {type === "House" && (<>
             <input 
                 type="number" 
                 min="0" 
@@ -126,7 +130,7 @@ export default function AdForm({ action, type }) {
 
             <input 
                 type="number" 
-                min="1" 
+                min="0" 
                 className="form-control mb-3" 
                 placeholder="Enter how many bathrooms" 
                 value={ad.bathrooms}
@@ -140,12 +144,12 @@ export default function AdForm({ action, type }) {
                 placeholder="Enter how many carpark" 
                 value={ad.carpark}
                 onChange={onChange("carpark")}
-            />
+            /></>)}
 
             <input 
-                type="text" 
+                type="number" 
                 className="form-control mb-3" 
-                placeholder="Size of land" 
+                placeholder="Size of land in sqft" 
                 value={ad.landsize}
                 onChange={onChange("landsize")}
             />
@@ -166,8 +170,14 @@ export default function AdForm({ action, type }) {
                 rows="2"
             />
 
-            <button className="btn btn-primary" onClick={handleClick}>SUBMIT</button>
-            <pre>{JSON.stringify(ad, null, 4)}</pre>
+            <button 
+                className="btn btn-primary w-100 mb-5" 
+                onClick={handleClick}
+                disabled={ad.loading}
+            >
+                {ad.loading ? 'SAVING...' : 'SUBMIT'}
+            </button>
+            {/* <pre>{JSON.stringify(ad, null, 4)}</pre> */}
         </>
     );
 }
