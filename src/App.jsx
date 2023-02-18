@@ -5,6 +5,7 @@ import { AuthProvider } from './context/auth';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import AdView from './pages/AdView';
 import AccountActivate from './pages/auth/AccountActivate';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import AccessAccount from './pages/auth/AccessAccount';
@@ -27,6 +28,7 @@ export default function App() {
 					<Route path="/" element={<Home />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/login" element={<Login />} />
+					<Route path="/ad/:slug" element={<AdView />} />
 					<Route path="/auth/account-activate/:token" element={<AccountActivate />} />
 					<Route path="/auth/forgot-password" element={<ForgotPassword />} />
 					<Route path="/auth/access-account/:token" element={<AccessAccount />} />

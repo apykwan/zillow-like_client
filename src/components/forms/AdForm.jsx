@@ -53,15 +53,6 @@ export default function AdForm({ action, type }) {
         if(!ad?.address || !ad?.photos?.length || !ad?.landsize || !ad?.title || !ad?.description) {
             return toast.error("Photo, Address, Size of Land, Title, and Description are required!");
         }
-
-        if(/^\d+$/.test(ad?.landsize) && !ad?.landsize.includes("sqft")) {
-            const landsizeUnit = `${ad?.landsize}sqft`;
-            setAd(prev=> ({
-                ...prev, 
-                landsize: landsizeUnit 
-            }));
-            console.log('landsize updated', ad.landsize)
-        }
        
         try {
             setAd({ ...ad, loading: true });
@@ -86,7 +77,7 @@ export default function AdForm({ action, type }) {
         if(!ad?.description && ad?.address) {
             setAd(prev => ({
                 ...prev,
-                description: lorem.generateParagraphs(1),
+                description: `${ad?.address} - ${lorem.generateParagraphs(1)}`,
                 title: `${type} for ${action} - ${lorem.generateWords(7)}`
             }));
         }
