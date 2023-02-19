@@ -1,5 +1,5 @@
 import { Badge } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import AdFeatures from './AdFeatures';
 import { formatNumber } from '../../helpers/util';

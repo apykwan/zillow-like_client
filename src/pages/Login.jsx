@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -11,6 +11,7 @@ export default function Login() {
     const passwordInput = useRef();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     async function handleSubmit (e) {
         e.preventDefault();
@@ -34,8 +35,7 @@ export default function Login() {
             setAuth(data);
             localStorage.setItem('zl-auth', JSON.stringify(data));
             toast.success("Login successful");
-            navigate("/");
-            
+            location?.state !== null ? navigate(location.state) : navigate("/dashboard");
         } catch (err) {
             console.log(err);
             setLoading(false);

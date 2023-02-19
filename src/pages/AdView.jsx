@@ -2,10 +2,18 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { MdSell, MdReceiptLong } from "react-icons/md";
 
+import MapCard from '../components/cards/MapCard';
 import AdFeatures from '../components/cards/AdFeatures';
 import ImageGallery from '../components/misc/ImageGallery';
+import LikeUnlike from '../components/misc/LikeUnlike';
+import { formatNumber } from '../helpers/util';
 import defaultPhoto from '../assets/default.jpg';
+
+dayjs.extend(relativeTime);
 
 export default function AdView() {
     const [ad, setAd] = useState({});
@@ -56,17 +64,27 @@ export default function AdView() {
             <div className="container-fluid">
                 <div className="row mt-2">
                     <div className="col-lg-4">
-                        <div className="mb-4">
-                            <button className="btn btn-primary btn-lg" disabled>
-                                {ad.type ? ad.type : ''} for {ad.action ? ad.action : ''}
-                            </button>
+                        <div className="d-flex justify-content-between mb-4">
+                            <div>
+                                <button className="btn btn-primary btn-lg" disabled>
+                                    {ad.type ? ad.type : ''} for {ad.action ? ad.action : ''}
+                                </button>
 
-                            <button className={`btn btn-${ad?.sold ? "danger" : "success"} btn-sm mx-3`} disabled>
-                                {ad?.sold ? "Off Market" : "In Market"}
-                            </button>
+                                <button className={`btn btn-${ad?.sold ? "danger" : "success"} btn-sm mx-3`} disabled>
+                                    <span className="mr-1">{ad?.sold ? (<MdReceiptLong />) : (<MdSell />)}</span>
+                                    {ad?.sold ? "Off Market" : "In Market"}
+                                </button>
+                            </div>
+                            <LikeUnlike ad={ad} />
                         </div>
+                        
                         <h1>{ad?.address}</h1>
-                        <AdFeatures ad={ad} />
+                        <button className="btn btn-light btn-sm w-100 p-3 my-3" disabled>
+                            <AdFeatures ad={ad} />
+                        </button>
+                        
+                        <h3 className="mt-4 h2">${formatNumber(ad?.price)}</h3>
+                        <p className="text-muted">Posted{dayjs(ad?.createdAt).fromNow()}</p>
                     </div>
                     <div className="col-lg-8">
                         <ImageGallery photos={photos} />
@@ -74,7 +92,13 @@ export default function AdView() {
                 </div>
             </div>
             
-            <pre>{JSON.stringify({ad, related}, null, 4)}</pre>
+            <div className="container mb-5">
+                <div className="row">
+                    <div className="col-lg-8 offset-lg-2 mt-3">
+                        <MapCard ad={ad} />
+                    </div>
+                </div>
+            </div>
         </>
     );
 }

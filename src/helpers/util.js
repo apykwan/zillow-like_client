@@ -1,4 +1,4 @@
 // Add comma to the number
-export function formatNumber(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+export function formatNumber(price) {
+    return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
