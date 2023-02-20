@@ -19,6 +19,7 @@ import SellLand from './pages/user/ad/SellLand';
 import RentHouse from './pages/user/ad/RentHouse';
 import RentLand from './pages/user/ad/RentLand';
 import Profile from './pages/user/Profile';
+import Settings from './pages/user/Settings';
 
 export default function App() {
 	return (
@@ -42,6 +43,7 @@ export default function App() {
 						<Route path="ad/create/Rent/House" element={<RentHouse />} />
 						<Route path="ad/create/Rent/Land" element={<RentLand />} />
 						<Route path="/user/:slug" element={<Profile />} />
+						<Route path="/user/settings" element={<Settings />} />
 					</Route>
 				</Routes>
 				<Footer />

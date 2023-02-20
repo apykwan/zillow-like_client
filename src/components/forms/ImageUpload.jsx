@@ -4,7 +4,7 @@ import Resizer from "react-image-file-resizer";
 import { Avatar } from 'antd';
 
 export default function ImageUpload({ ad, setAd }) {
-    async function handleUpload (e) {
+    async function handleUpload(e) {
         try {
             let files = e.target.files;
             files = [...files];
@@ -50,7 +50,7 @@ export default function ImageUpload({ ad, setAd }) {
         }
     }
 
-    function handleDelete (file) {
+    function handleDelete(file) {
         return async function(e) {
             const answer = window.confirm("Delete Image");
             if(!answer) return;
@@ -89,8 +89,8 @@ export default function ImageUpload({ ad, setAd }) {
                     key={file?.Key} 
                     src={file?.Location} 
                     shape="square" 
-                    size="46" 
-                    className="ml-3 mb-4" 
+                    size="large" 
+                    className="ml-3 mb-4 pointer" 
                     onClick={handleDelete(file)}
                 />
             ))}

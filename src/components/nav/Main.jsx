@@ -34,8 +34,10 @@ export default function Main() {
             <div className="d-flex flex-row">
                 <NavLink className="nav-link" aria-current="page" to="/">Home</NavLink>
                 {loggedIn && (<>
+                    <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
                     <NavLink className="nav-link" to="/ad/create">Post Ad</NavLink>
                     <NavLink className="nav-link" to="/user/profile">Profile</NavLink>
+                    <NavLink className="nav-link" to="/user/settings">Settings</NavLink>
                 </>)}
                 
                 {!loggedIn && <>

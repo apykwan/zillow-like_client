@@ -5,11 +5,12 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { MdSell, MdReceiptLong } from "react-icons/md";
-import HTMLRenderer from 'react-html-renderer'
+import HTMLRenderer from 'react-html-renderer';
 
 import MapCard from '../components/cards/MapCard';
 import AdFeatures from '../components/cards/AdFeatures';
 import AdCard from '../components/cards/AdCard';
+import ContactSeller from '../components/forms/ContactSeller';
 import ImageGallery from '../components/misc/ImageGallery';
 import LikeUnlike from '../components/misc/LikeUnlike';
 import { formatNumber } from '../helpers/util';
@@ -109,6 +110,10 @@ export default function AdView() {
                         <hr />
                     </div>
                 </div>
+            </div>
+
+            <div className="container">
+                <ContactSeller ad={ad} />
             </div>
 
             {related.length > 1 ? (

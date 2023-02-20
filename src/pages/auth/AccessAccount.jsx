@@ -27,8 +27,8 @@ export default function AccessAccount() {
             localStorage.setItem('zl-auth', JSON.stringify(data));
             // save in context
             setAuth(data);
-            toast.success('Plesae update your password in profile page');
-            navigate("/");
+            toast.success('Plesae update your password in Settings');
+            navigate("/user/settings");
         } catch(err) {
             console.log(err);
             toast.error('Something went wrong. Please try again later.');
