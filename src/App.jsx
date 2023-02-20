@@ -12,11 +12,13 @@ import AccessAccount from './pages/auth/AccessAccount';
 import Dashboard from './pages/user/Dashboard';
 import AdCreate from './pages/user/ad/AdCreate';
 import Main from './components/nav/Main';
+import Footer from './components/nav/Footer';
 import PrivateRoute from './components/routes/PrivateRoute';
 import SellHouse from './pages/user/ad/SellHouse';
 import SellLand from './pages/user/ad/SellLand';
 import RentHouse from './pages/user/ad/RentHouse';
 import RentLand from './pages/user/ad/RentLand';
+import Profile from './pages/user/Profile';
 
 export default function App() {
 	return (
@@ -39,8 +41,10 @@ export default function App() {
 						<Route path="ad/create/Sell/Land" element={<SellLand />} />
 						<Route path="ad/create/Rent/House" element={<RentHouse />} />
 						<Route path="ad/create/Rent/Land" element={<RentLand />} />
+						<Route path="/user/:slug" element={<Profile />} />
 					</Route>
 				</Routes>
+				<Footer />
 			</AuthProvider>
 		</BrowserRouter>
 	);

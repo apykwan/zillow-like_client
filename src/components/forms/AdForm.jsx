@@ -16,8 +16,8 @@ const lorem = new LoremIpsum({
         min: 1
     },
     wordsPerSentence: {
-        max: 24,
-        min: 18
+        max: 32,
+        min: 24
     }
 });
 
@@ -77,7 +77,7 @@ export default function AdForm({ action, type }) {
         if(!ad?.description && ad?.address) {
             setAd(prev => ({
                 ...prev,
-                description: `${ad?.address} - ${lorem.generateParagraphs(1)}`,
+                description: `${ad?.address} - ${lorem.generateParagraphs(2)}`,
                 title: `${type} for ${action} - ${lorem.generateWords(7)}`
             }));
         }
@@ -168,7 +168,6 @@ export default function AdForm({ action, type }) {
             >
                 {ad.loading ? 'SAVING...' : 'SUBMIT'}
             </button>
-            {/* <pre>{JSON.stringify(ad, null, 4)}</pre> */}
         </>
     );
 }

@@ -5,9 +5,11 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { MdSell, MdReceiptLong } from "react-icons/md";
+import HTMLRenderer from 'react-html-renderer'
 
 import MapCard from '../components/cards/MapCard';
 import AdFeatures from '../components/cards/AdFeatures';
+import AdCard from '../components/cards/AdCard';
 import ImageGallery from '../components/misc/ImageGallery';
 import LikeUnlike from '../components/misc/LikeUnlike';
 import { formatNumber } from '../helpers/util';
@@ -96,9 +98,28 @@ export default function AdView() {
                 <div className="row">
                     <div className="col-lg-8 offset-lg-2 mt-3">
                         <MapCard ad={ad} />
+
+                        <br />
+
+                        <h1>{ad?.type} in ${ad?.address} for {ad?.action} ${ad?.price}</h1>
+                        <AdFeatures ad={ad} />
+                        <hr />
+                        <h3 className="fw-bold">{ad?.title}</h3>
+                        <HTMLRenderer html={ad?.description?.replaceAll(".",  "<br/><br/>")} />
+                        <hr />
                     </div>
                 </div>
             </div>
+
+            {related.length > 1 ? (
+                <div className="container-fluid">
+                    <h4 className="text-center">You may also be interested in: </h4>
+                    <div className="row">
+                        {related?.map(ad => <AdCard key={ad._id} ad={ad} />)}
+                    </div>
+                </div>
+                ) : ""
+            }
         </>
     );
 }

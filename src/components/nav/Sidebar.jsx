@@ -9,7 +9,10 @@ export default function Sidebar() {
                     <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink className="nav-link" to="/ad/create">Create Ad</NavLink>
+                    <NavLink className="nav-link" to="/ad/create">Post Ad</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink className="nav-link" to="/user/profile">Profile</NavLink>
                 </li>
             </ul>
         </>
