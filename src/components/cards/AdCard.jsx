@@ -3,10 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 import AdFeatures from './AdFeatures';
 import { formatNumber } from '../../helpers/util';
-import styles from './AdCard.module.css';
+import styles from './css/AdCard.module.css';
 
-export default function AdCard({ ad }) {
+export default function AdCard({ ad, role="Buyer" }) {
     const navigate = useNavigate();
+
+    function handleNavigate() {
+        if(role === "Buyer") navigate(`/ad/${ad.slug}`);
+        if(role === "Seller") navigate(`/user/ad/${ad.slug}`);
+    }
     return (
         <div className="col-lg-4 p-4 gx-4 gy-4">
             <Badge.Ribbon 
@@ -15,7 +20,7 @@ export default function AdCard({ ad }) {
             >
                 <div 
                     className={`${styles.hoverable} card hoverable shadow`}
-                    onClick={() => navigate(`/ad/${ad.slug}`)}
+                    onClick={handleNavigate}
                 >
                     <img 
                         className={styles["ad-card__img"]}

@@ -23,7 +23,7 @@ export default function PrivateRoute() {
             setOk(true);
         } catch (err) {
             setOk(false);
-            toast.error("Please refresh the page.");
+            toast.error("Please refresh the page to stay logged in.");
         }
     }
 

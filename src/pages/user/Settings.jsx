@@ -3,7 +3,6 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 
 import { useAuth } from '../../context/auth';
-import Sidebar from '../../components/nav/Sidebar';
 
 export default function Settings() {
     const [auth, setAuth] = useAuth();
@@ -49,7 +48,6 @@ export default function Settings() {
         <>
             <h1 className="display-1 bg-primary text-light p-5">Profile</h1>
             <div className="container-fluid">
-                <Sidebar />
                 <div className="container mt-2">
                     <div className="row">
                         <div className="col-lg-8 offset-lg-2 mt-2">

@@ -3,23 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import CurrencyInput from 'react-currency-input-field';
-import { LoremIpsum } from "lorem-ipsum";
 import toast from 'react-hot-toast';
 
 import { GOOGLE_PLACES_KEY } from '../../config';
+import loremGenerator from '../../helpers/loremGenerator';
 import ImageUpload from './ImageUpload';
 
 // generate paragraph for description and title
-const lorem = new LoremIpsum({
-    sentencesPerParagraph: {
-        max: 1,
-        min: 1
-    },
-    wordsPerSentence: {
-        max: 32,
-        min: 24
-    }
-});
+const { generateParagraphs, generateWords } = loremGenerator(6, 10);
 
 export default function AdForm({ action, type }) {
     const [ad, setAd] = useState({
@@ -73,15 +64,14 @@ export default function AdForm({ action, type }) {
         }
     }
 
-    useEffect(() => {
+    useEffect(function() {
         if(!ad?.description && ad?.address) {
             setAd(prev => ({
                 ...prev,
-                description: `${ad?.address} - ${lorem.generateParagraphs(2)}`,
-                title: `${type} for ${action} - ${lorem.generateWords(7)}`
+                description: `${ad?.address} - ${generateParagraphs}`,
+                title: `${type} for ${action} - ${generateWords}`
             }));
         }
-
     }, [ad]);
     return (
         <>

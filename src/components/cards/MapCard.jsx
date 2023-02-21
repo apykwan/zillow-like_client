@@ -1,7 +1,7 @@
 import GoogleMapReact from 'google-map-react';
 
 import { GOOGLE_MAPS_KEY } from '../../config';
-import styles from './MapCard.module.css';
+import styles from './css/MapCard.module.css';
 
 export default function MapCard({ ad }) {
     const defaultProps = {

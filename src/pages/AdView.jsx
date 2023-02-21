@@ -7,6 +7,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { MdSell, MdReceiptLong } from "react-icons/md";
 import HTMLRenderer from 'react-html-renderer';
 
+import { useAuth } from '../context/auth';
 import MapCard from '../components/cards/MapCard';
 import AdFeatures from '../components/cards/AdFeatures';
 import AdCard from '../components/cards/AdCard';
@@ -22,6 +23,7 @@ export default function AdView() {
     const [ad, setAd] = useState({});
     const [related, setRelated] = useState([]);
     const { slug } = useParams();
+    const [auth, setAuth] = useAuth();
 
     useEffect(() => {
         if(slug) fetchAd();
@@ -35,7 +37,7 @@ export default function AdView() {
             setRelated(data?.related);
         } catch (err) {
             console.log(err);
-            toast.error('Fail to fetch the data. Please refresh the page');
+            toast.error('Please refresh the page.');
         }
     }
 
@@ -61,7 +63,6 @@ export default function AdView() {
     }
 
     const photos = ad?.photos && generatePhotoArray(ad?.photos);
-    
     return (
         <>
             <div className="container-fluid">
@@ -87,7 +88,7 @@ export default function AdView() {
                         </button>
                         
                         <h3 className="mt-4 h2">${formatNumber(ad?.price)}</h3>
-                        <p className="text-muted">Posted{dayjs(ad?.createdAt).fromNow()}</p>
+                        <p className="text-muted">Posted {dayjs(ad?.createdAt).fromNow()}</p>
                     </div>
                     <div className="col-lg-8">
                         <ImageGallery photos={photos} />
@@ -112,10 +113,12 @@ export default function AdView() {
                 </div>
             </div>
 
-            <div className="container">
-                <ContactSeller ad={ad} />
-            </div>
-
+            {auth?.user?._id !== ad?.postedBy?._id && (
+                <div className="container">
+                    <ContactSeller ad={ad} />
+                </div>
+            )}
+            
             {related.length > 1 ? (
                 <div className="container-fluid">
                     <h4 className="text-center">You may also be interested in: </h4>

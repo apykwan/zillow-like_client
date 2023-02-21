@@ -20,6 +20,7 @@ import RentHouse from './pages/user/ad/RentHouse';
 import RentLand from './pages/user/ad/RentLand';
 import Profile from './pages/user/Profile';
 import Settings from './pages/user/Settings';
+import AdEdit from './pages/user/ad/AdEdit';
 
 export default function App() {
 	return (
@@ -44,6 +45,7 @@ export default function App() {
 						<Route path="ad/create/Rent/Land" element={<RentLand />} />
 						<Route path="/user/:slug" element={<Profile />} />
 						<Route path="/user/settings" element={<Settings />} />
+						<Route path="/user/ad/:slug" element={<AdEdit />} />
 					</Route>
 				</Routes>
 				<Footer />

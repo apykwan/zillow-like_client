@@ -1,8 +1,11 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { FcSettings } from "react-icons/fc";
+import { AiFillProfile, AiOutlineLogout } from "react-icons/ai";
+import { RxDashboard } from "react-icons/rx";
 
 import { useAuth } from '../../context/auth';
-import styles from './Main.module.css';
+import styles from './css/Main.module.css';
 
 export default function Main() {
     const [auth, setAuth] = useAuth();
@@ -36,8 +39,6 @@ export default function Main() {
                 {loggedIn && (<>
                     <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
                     <NavLink className="nav-link" to="/ad/create">Post Ad</NavLink>
-                    <NavLink className="nav-link" to="/user/profile">Profile</NavLink>
-                    <NavLink className="nav-link" to="/user/settings">Settings</NavLink>
                 </>)}
                 
                 {!loggedIn && <>
@@ -55,11 +56,30 @@ export default function Main() {
                             {auth?.user?.name ? auth.user.name : auth.user.username}
                         </button>
                         <ul className="dropdown-menu mt-1">
-                            <li className="p-1">
-                                <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
+                            <li>
+                                <NavLink className="nav-link" to="/dashboard">
+                                    <RxDashboard size="14" /> 
+                                    <span className="ml-2">Dashboard</span>
+                                </NavLink>
                             </li>
-                            <li className="p-1">
-                                <a className="nav-link pointer" onClick={logout}>Logout</a>
+                            <li>
+                                <NavLink className="nav-link" to="/user/profile">
+                                    <AiFillProfile size="14" /> 
+                                    <span className="ml-2">User Profile</span>
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink className="nav-link" to="/user/settings">
+                                    <FcSettings size="14" /> 
+                                    <span className="ml-2">Settings</span>
+                                </NavLink>
+                            </li>
+                            <hr />
+                            <li>
+                                <a className="nav-link pointer" onClick={logout}>
+                                    <AiOutlineLogout size="14" />
+                                    <span className="ml-2">Logout</span>
+                                </a>
                             </li>
                         </ul>
                     </li>

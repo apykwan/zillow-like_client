@@ -30,7 +30,11 @@ export default function Login() {
             setLoading(false);
 
             // for email & password input errors
-            if(data?.error) return toast.error(data.error);
+            if(data?.error) {
+                toast.error(data.error);
+                navigate("/register");
+                return;
+            }
 
             setAuth(data);
             localStorage.setItem('zl-auth', JSON.stringify(data));

@@ -1,25 +1,14 @@
 import { useRef, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import slugify from 'slugify';
-import { LoremIpsum } from "lorem-ipsum";
 
 import { useAuth } from '../../context/auth';
 import ProfileUpload from '../../components/forms/ProfileUpload';
-import Sidebar from '../../components/nav/Sidebar';
+import loremGenerator from '../../helpers/loremGenerator';
 
-// generate paragraph for description and title
-const lorem = new LoremIpsum({
-    sentencesPerParagraph: {
-        max: 2,
-        min: 1
-    },
-    wordsPerSentence: {
-        max: 32,
-        min: 24
-    }
-});
+// generate paragraph for description
+const { generateParagraphs } = loremGenerator(3);
 
 export default function Profile() {
     const [auth, setAuth] = useAuth();
@@ -33,7 +22,6 @@ export default function Profile() {
     const addressInput = useRef();
     const phoneInput = useRef();
     const aboutInput = useRef();
-    const navigate = useNavigate();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -72,7 +60,7 @@ export default function Profile() {
             companyInput.current.value = auth.user?.company;
             addressInput.current.value = auth.user?.address;
             phoneInput.current.value = auth.user?.phone;
-            aboutInput.current.value = auth.user?.about || `${auth.user?.username} - ${lorem.generateParagraphs(2)}`;
+            aboutInput.current.value = auth.user?.about || `${auth.user?.username} - ${generateParagraphs}`;
             setPhoto(auth.user?.photo);
         }
     }, []);
@@ -81,7 +69,6 @@ export default function Profile() {
         <>
             <h1 className="display-1 bg-primary text-light p-5">Profile</h1>
             <div className="container-fluid">
-                <Sidebar />
                 <div className="container mt-2">
                     <div className="row">
                         <div className="col-lg-2 mt-2">
