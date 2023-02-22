@@ -41,8 +41,8 @@ export default function AdForm({ action, type }) {
 
     async function handleClick(e) {
         e.preventDefault();
-        if(!ad?.address || !ad?.photos?.length || !ad?.landsize || !ad?.title || !ad?.description) {
-            return toast.error("Photo, Address, Size of Land, Title, and Description are required!");
+        if(!ad?.address || !ad?.photos?.length || !ad?.landsize || !ad?.title || !ad?.description || !ad?.price) {
+            return toast.error("Photo, Address, Size of Land, Price, Title, and Description are required!");
         }
        
         try {

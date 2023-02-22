@@ -1,9 +1,11 @@
 import { useRef, useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import slugify from 'slugify';
 
 import { useAuth } from '../../context/auth';
+import { GOOGLE_PLACES_KEY } from '../../config';
 import ProfileUpload from '../../components/forms/ProfileUpload';
 import loremGenerator from '../../helpers/loremGenerator';
 
@@ -15,11 +17,11 @@ export default function Profile() {
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [photo, setPhoto] = useState(null);
+    const [address, setAddress] = useState();
     const usernameInput = useRef();
     const nameInput = useRef();
     const emailInput = useRef();
     const companyInput = useRef();
-    const addressInput = useRef();
     const phoneInput = useRef();
     const aboutInput = useRef();
 
@@ -31,7 +33,7 @@ export default function Profile() {
             name: nameInput.current.value,
             email: emailInput.current.value,
             company: companyInput.current.value,
-            address: addressInput.current.value,
+            address,
             phone: phoneInput.current.value,
             about: aboutInput.current.value,
             photo
@@ -58,7 +60,7 @@ export default function Profile() {
             nameInput.current.value = auth.user?.name;
             emailInput.current.value = auth.user?.email;
             companyInput.current.value = auth.user?.company;
-            addressInput.current.value = auth.user?.address;
+            setAddress(auth.user?.address);
             phoneInput.current.value = auth.user?.phone;
             aboutInput.current.value = auth.user?.about || `${auth.user?.username} - ${generateParagraphs}`;
             setPhoto(auth.user?.photo);
@@ -108,16 +110,23 @@ export default function Profile() {
                                 />
                                 <input 
                                     type="text"
-                                    placeholder="Enter your address"
-                                    className="form-control mb-4"
-                                    ref={addressInput}  
-                                />
-                                <input 
-                                    type="text"
                                     placeholder="Enter your phone number"
                                     className="form-control mb-4"
                                     ref={phoneInput}  
                                 />
+                                <div className="form-control mb-5">
+                                    <GooglePlacesAutocomplete 
+                                        apiKey={GOOGLE_PLACES_KEY} 
+                                        apiOptions="us"
+                                        selectProps={{ 
+                                            defaultInputValue: auth.user?.address,
+                                            placeholder: "Enter your address",
+                                            onChange: function ({ value }) {
+                                                setAddress(value.description);
+                                            }
+                                        }} 
+                                    />
+                                </div> 
                                 <textarea 
                                     placeholder="Enter your introduction"
                                     className="form-control mb-4 no-resize"

@@ -29,7 +29,9 @@ export default function AdEdit({ action, type }) {
         type,
         action,
     });
+    const [loaded, setLoaded] = useState(false);
     const navigate = useNavigate();
+    const params = useParams();
 
     function onChange(field) {
         return function(event) {
@@ -42,8 +44,8 @@ export default function AdEdit({ action, type }) {
 
     async function handleClick(e) {
         e.preventDefault();
-        if(!ad?.address || !ad?.photos?.length || !ad?.landsize || !ad?.title || !ad?.description) {
-            return toast.error("Photo, Address, Size of Land, Title, and Description are required!");
+        if(!ad?.address || !ad?.photos?.length || !ad?.landsize || !ad?.title || !ad?.description || !ad?.price) {
+            return toast.error("Photo, Address, Size of Land, price, Title, and Description are required!");
         }
        
         try {
@@ -57,13 +59,31 @@ export default function AdEdit({ action, type }) {
                 return;
             }
 
-            toast.success('Ad created successfully');
+            toast.success('Ad updated successfully');
             setAd({...ad, loading: false });
         } catch (err) {
             console.log(err);
             setAd({...ad, loading: false });
         }
     }
+
+    async function fetchAd() {
+        try {
+            setAd({...ad, loading: true });
+            const { data } = await axios.get(`/ad/${params.slug}`);
+            // ad.price = Number(ad.price);
+
+            setAd({...data.ad, loading: false });
+            setLoaded(true);
+        } catch (err) {
+            console.log(err);
+            setAd({...ad, loading: false });
+        }
+    }
+
+    useEffect(() => {
+        if(params?.slug) fetchAd();
+    },[params?.slug]);
 
     useEffect(function() {
         if(!ad?.description && ad?.address) {
@@ -80,58 +100,65 @@ export default function AdEdit({ action, type }) {
             <div className="container">
                 <ImageUpload ad={ad} setAd={setAd} />
                 <div className="mb-3 form-control">
-                    <GooglePlacesAutocomplete 
-                        apiKey={GOOGLE_PLACES_KEY} 
-                        apiOptions="us"
-                        selectProps={{ 
-                            defaultInputValue: ad?.address,
-                            placeholder: "Search for address..",
-                            onChange: function ({ value }) {
-                                setAd({
-                                    ...ad, 
-                                    address: value.description 
-                                });
-                            }
-                        }} 
-                    />
+                    {ad.address && (
+                        <GooglePlacesAutocomplete 
+                            apiKey={GOOGLE_PLACES_KEY} 
+                            apiOptions="us"
+                            selectProps={{ 
+                                defaultInputValue: ad?.address,
+                                placeholder: "Search for address..",
+                                onChange: function ({ value }) {
+                                    setAd({
+                                        ...ad, 
+                                        address: value.description 
+                                    });
+                                }
+                            }} 
+                        />
+                    )}
                 </div>
-                <CurrencyInput 
-                    className="form-control mb-3" 
-                    placeholder="Enter price" 
-                    defaultValue={ad.price}
-                    onValueChange={(value) => setAd({ ...ad, price: value })}
-                />
+                {loaded && (
+                    <CurrencyInput 
+                        className="form-control mb-3" 
+                        placeholder="Enter price" 
+                        defaultValue={ad.price}
+                        onValueChange={(value) => setAd({ ...ad, price: value })}
+                    />
+                )}
 
-                {type === "House" && (<>
-                <input 
-                    type="number" 
-                    min="0" 
-                    className="form-control mb-3" 
-                    placeholder="Enter how many bedrooms" 
-                    value={ad.bedrooms}
-                    onChange={onChange("bedrooms")}
-                />
+                {ad?.type === "House" && (
+                    <>
+                        <input 
+                            type="number" 
+                            min="0" 
+                            className="form-control mb-3" 
+                            placeholder="Enter how many bedrooms" 
+                            value={ad.bedrooms}
+                            onChange={onChange("bedrooms")}
+                        />
+
+                        <input 
+                            type="number" 
+                            min="0" 
+                            className="form-control mb-3" 
+                            placeholder="Enter how many bathrooms" 
+                            value={ad.bathrooms}
+                            onChange={onChange("bathrooms")}
+                        />
+
+                        <input 
+                            type="number" 
+                            min="0" 
+                            className="form-control mb-3" 
+                            placeholder="Enter how many carpark" 
+                            value={ad.carpark}
+                            onChange={onChange("carpark")}
+                        />
+                    </>
+                )}
 
                 <input 
-                    type="number" 
-                    min="0" 
-                    className="form-control mb-3" 
-                    placeholder="Enter how many bathrooms" 
-                    value={ad.bathrooms}
-                    onChange={onChange("bathrooms")}
-                />
-
-                <input 
-                    type="number" 
-                    min="0" 
-                    className="form-control mb-3" 
-                    placeholder="Enter how many carpark" 
-                    value={ad.carpark}
-                    onChange={onChange("carpark")}
-                /></>)}
-
-                <input 
-                    type="number" 
+                    type="text" 
                     className="form-control mb-3" 
                     placeholder="Size of land in sqft" 
                     value={ad.landsize}

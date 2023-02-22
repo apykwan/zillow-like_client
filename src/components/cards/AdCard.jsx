@@ -2,7 +2,7 @@ import { Badge } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import AdFeatures from './AdFeatures';
-import { formatNumber } from '../../helpers/util';
+import { formatNumber, trimAddress } from '../../helpers/util';
 import styles from './css/AdCard.module.css';
 
 export default function AdCard({ ad, role="Buyer" }) {
@@ -29,7 +29,7 @@ export default function AdCard({ ad, role="Buyer" }) {
                     />
                     <div className="card-body">
                         <h3>${formatNumber(ad?.price)}</h3>
-                        <p className="card-text">{ad?.address}</p>
+                        <p className="card-text">{trimAddress(ad?.address)}</p>
                         <AdFeatures ad={ad} />
                     </div>
                 </div>
