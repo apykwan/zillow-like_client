@@ -81,6 +81,26 @@ export default function AdEdit({ action, type }) {
         }
     }
 
+    async function handleDelete() {
+        try {
+            setAd({ ...ad, loading: true });
+            const { data } = await axios.delete(`/ad/${ad._id}`);
+            navigate("/dashboard");
+
+            if(data?.error) {
+                toast.error(data.error);
+                setAd({...ad, loading: false });
+                return;
+            }
+
+            toast.success('Ad deleted successfully');
+            setAd({...ad, loading: false });
+        } catch (err) {
+            console.log(err);
+            setAd({...ad, loading: false });
+        }
+    }
+
     useEffect(() => {
         if(params?.slug) fetchAd();
     },[params?.slug]);
@@ -174,20 +194,32 @@ export default function AdEdit({ action, type }) {
                 />
 
                 <textarea 
-                    className="form-control mb-3 no-resize" 
+                    className="form-control mb-5 no-resize" 
                     placeholder="Enter description" 
                     value={ad.description}
                     onChange={onChange("description")}
                     rows="2"
                 />
 
-                <button 
-                    className="btn btn-primary w-100 mb-5" 
-                    onClick={handleClick}
-                    disabled={ad.loading}
-                >
-                    {ad.loading ? 'SAVING...' : 'SUBMIT'}
-                </button>
+                <div className="row">
+                    <button 
+                        className="btn btn-primary col-md-5 mb-5" 
+                        onClick={handleClick}
+                        disabled={ad.loading}
+                    >
+                        {ad.loading ? 'SAVING...' : 'SAVE'}
+                    </button>
+
+                    <button 
+                        className="btn btn-danger col-md-5 offset-md-2 mb-5" 
+                        onClick={handleDelete}
+                        disabled={ad.loading}
+                    >
+                        {ad.loading ? 'DELETING...' : 'DELETE'}
+                    </button>
+                </div>
+
+                
             </div>
         </>
     );

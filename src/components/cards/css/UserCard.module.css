@@ -1,0 +1,11 @@
+.user-card__img {
+    height: 250px;
+    object-fit: cover;
+}
+
+.hoverable:hover {
+    transform: scale(1.01);
+    box-shadow: 0.4rem 0.4rem 1rem rgba(0, 0, 0, 0.15) !important;
+    opacity: 0.75;
+    cursor: pointer;
+}

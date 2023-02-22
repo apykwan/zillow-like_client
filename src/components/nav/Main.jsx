@@ -1,8 +1,9 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { FcSettings } from "react-icons/fc";
+import { FcSettings, FcLike } from "react-icons/fc";
 import { AiFillProfile, AiOutlineLogout } from "react-icons/ai";
 import { RxDashboard } from "react-icons/rx";
+import { BsFillEnvelopeFill } from "react-icons/bs";
 
 import { useAuth } from '../../context/auth';
 import styles from './css/Main.module.css';
@@ -36,6 +37,7 @@ export default function Main() {
         <nav className="nav p-2 d-flex justify-content-between">
             <div className="d-flex flex-row">
                 <NavLink className="nav-link" aria-current="page" to="/">Home</NavLink>
+                <NavLink className="nav-link" aria-current="page" to="/agents">Agents</NavLink>
                 {loggedIn && (<>
                     <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
                     <NavLink className="nav-link" to="/ad/create">Post Ad</NavLink>
@@ -47,7 +49,8 @@ export default function Main() {
                 </>}
             </div>
             {loggedIn && (
-                <div className="dropdown">
+                <>
+                    <div className="dropdown">
                     <li>
                         <button 
                             className={`${styles['nav-user']} nav-link dropdown-toggle`} 
@@ -57,9 +60,15 @@ export default function Main() {
                         </button>
                         <ul className="dropdown-menu mt-1">
                             <li>
-                                <NavLink className="nav-link" to="/dashboard">
-                                    <RxDashboard size="14" /> 
-                                    <span className="ml-2">Dashboard</span>
+                                <NavLink className="nav-link" to="/user/wishlist">
+                                    <FcLike size="14" /> 
+                                    <span className="ml-2">Wishlist</span>
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink className="nav-link" to="/user/enquiries">
+                                    <BsFillEnvelopeFill size="14" /> 
+                                    <span className="ml-2">Inquiry</span>
                                 </NavLink>
                             </li>
                             <li>
@@ -84,6 +93,8 @@ export default function Main() {
                         </ul>
                     </li>
                 </div>
+                </>
+                
             )}
         </nav>
     );

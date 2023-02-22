@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import CurrencyInput from 'react-currency-input-field';
@@ -8,11 +7,13 @@ import toast from 'react-hot-toast';
 import { GOOGLE_PLACES_KEY } from '../../config';
 import loremGenerator from '../../helpers/loremGenerator';
 import ImageUpload from './ImageUpload';
+import { useAuth } from '../../context/auth';
 
 // generate paragraph for description and title
 const { generateParagraphs, generateWords } = loremGenerator(6, 10);
 
 export default function AdForm({ action, type }) {
+    const [auth, setAuth] = useAuth();
     const [ad, setAd] = useState({
         photos: [],
         uploading: false,
@@ -28,7 +29,6 @@ export default function AdForm({ action, type }) {
         type,
         action,
     });
-    const navigate = useNavigate();
 
     function onChange(field) {
         return function(event) {
@@ -48,7 +48,6 @@ export default function AdForm({ action, type }) {
         try {
             setAd({ ...ad, loading: true });
             const { data } = await axios.post('/ad', ad);
-            navigate("/dashboard");
 
             if(data?.error) {
                 toast.error(data.error);
@@ -56,8 +55,19 @@ export default function AdForm({ action, type }) {
                 return;
             }
 
+            // data { user, ad }
+
+            // update context & localStorage
+            setAuth({ ...auth, user: data.user });
+            const fromLS = JSON.parse(localStorage.getItem("zl-auth"));
+            fromLS.user = data.user;
+            localStorage.setItem("zl-auth", JSON.stringify(fromLS));
+
             toast.success('Ad created successfully');
             setAd({...ad, loading: false });
+
+            // reload the page
+            window.location.href = "/dashboard";
         } catch (err) {
             console.log(err);
             setAd({...ad, loading: false });

@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import AdView from './pages/AdView';
+import Agents from './pages/Agents';
 import AccountActivate from './pages/auth/AccountActivate';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import AccessAccount from './pages/auth/AccessAccount';
@@ -21,6 +22,8 @@ import RentLand from './pages/user/ad/RentLand';
 import Profile from './pages/user/Profile';
 import Settings from './pages/user/Settings';
 import AdEdit from './pages/user/ad/AdEdit';
+import Wishlist from './pages/user/Wishlist';
+import Enquiries from './pages/user/Enquiries';
 
 export default function App() {
 	return (
@@ -30,6 +33,7 @@ export default function App() {
 				<Toaster />
 				<Routes>
 					<Route path="/" element={<Home />} />
+					<Route path="/agents" element={<Agents />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/ad/:slug" element={<AdView />} />
@@ -46,6 +50,8 @@ export default function App() {
 						<Route path="/user/:slug" element={<Profile />} />
 						<Route path="/user/settings" element={<Settings />} />
 						<Route path="/user/ad/:slug" element={<AdEdit />} />
+						<Route path="/user/wishlist" element={<Wishlist />} />
+						<Route path="/user/enquiries" element={<Enquiries />} />
 					</Route>
 				</Routes>
 				<Footer />

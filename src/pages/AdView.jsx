@@ -79,7 +79,7 @@ export default function AdView() {
                                     {ad?.sold ? "Off Market" : "In Market"}
                                 </button>
                             </div>
-                            <LikeUnlike ad={ad} />
+                            {auth?.user?._id !== ad?.postedBy?._id && <LikeUnlike ad={ad} />}
                         </div>
                         
                         <h1>{ad?.address}</h1>
