@@ -28,6 +28,7 @@ export default function AdCreate() {
     return (
         <div>
             <h1 className="display-1 bg-primary text-light p-5">Ad Create</h1>
+            <h3>Sell or lease your properties</h3>
 
             <div className={`${styles['button-container']} d-flex justify-content-center align-items-center vh-100`}>
                 <div className="col-lg-6">

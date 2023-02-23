@@ -37,11 +37,14 @@ export default function Main() {
         <nav className="nav p-2 d-flex justify-content-between">
             <div className="d-flex flex-row">
                 <NavLink className="nav-link" aria-current="page" to="/">Home</NavLink>
+                <NavLink className="nav-link" aria-current="page" to="/search">Search</NavLink>
+                <NavLink className="nav-link" aria-current="page" to="/buy">Buy</NavLink>
+                <NavLink className="nav-link" aria-current="page" to="/rent">Rent</NavLink>
                 <NavLink className="nav-link" aria-current="page" to="/agents">Agents</NavLink>
-                {loggedIn && (<>
-                    <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
+                {/* {loggedIn && (<>
                     <NavLink className="nav-link" to="/ad/create">Post Ad</NavLink>
-                </>)}
+                    <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
+                </>)} */}
                 
                 {!loggedIn && <>
                     <NavLink className="nav-link" to="/login">Login</NavLink>
@@ -49,7 +52,9 @@ export default function Main() {
                 </>}
             </div>
             {loggedIn && (
-                <>
+                <div className="d-flex justify-content-end">
+                    <NavLink className="nav-link" to="/ad/create">Sell</NavLink>
+                    <NavLink className="nav-link" to="/dashboard">Dashboard</NavLink>
                     <div className="dropdown">
                     <li>
                         <button 
@@ -93,7 +98,7 @@ export default function Main() {
                         </ul>
                     </li>
                 </div>
-                </>
+                </div>
                 
             )}
         </nav>

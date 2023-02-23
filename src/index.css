@@ -19,3 +19,11 @@
     object-fit: cover;
     height: 500px !important;   
 }
+
+.square {
+    border-radius: 0px;
+}
+
+.dropdown-menu > li {
+    cursor: pointer;
+}

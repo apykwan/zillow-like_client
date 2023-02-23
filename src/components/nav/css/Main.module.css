@@ -7,8 +7,8 @@
 
 .nav-user:hover,
 .nav-user:focus {
-    color: white;
-    background-color: #2196f3;
+    /* color: white;
+    background-color: #2196f3; */
     outline: none;
 }
 

@@ -5,7 +5,10 @@ import toast from 'react-hot-toast';
 import { Badge } from 'antd';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { HiOfficeBuilding } from "react-icons/hi";
+import { MdLocationOn, MdPhone } from "react-icons/md";
 
+import { formatPhoneNumber } from '../../helpers/util';
 import userDefaultImg from '../../assets/default_user.jpg'; 
 import styles from './css/UserCard.module.css';
 
@@ -16,7 +19,7 @@ export default function UserCard ({ user }) {
     const navigate = useNavigate();
 
     function handleNavigate() {
-        navigate(`/user/${user.username}`);
+        navigate(`/agent/${user.username}`);
     }
 
     async function fetchAdCount() {
@@ -50,7 +53,11 @@ export default function UserCard ({ user }) {
                     />
                     <div className="card-body">
                         <h3>{user?.username ?? user?.name}</h3>
-                        <p className="card-text">Joined {dayjs(user.createdAt).fromNow()}</p>
+                        <hr />
+                        <h5 className="card-text p-1"><HiOfficeBuilding size="16" /> {user.company}</h5>
+                        <h5 className="card-text p-1"><MdLocationOn size="16" /> {user.address}</h5>
+                        <h5 className="card-text p-1"><MdPhone size="16" /> {formatPhoneNumber(user.phone)}</h5>
+                        <small className="text-muted ml-auto">Joined {dayjs(user.createdAt).fromNow()}</small>
                     </div>
                 </div>
             </Badge.Ribbon>
