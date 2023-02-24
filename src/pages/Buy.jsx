@@ -22,8 +22,9 @@ export default function Buy() {
     }
     return (
         <>
-            <SearchForm />
-            <h1 className="display-1 bg-primary text-light p-5">Sell</h1>
+            <h1 className="bg-primary p-5">
+                <SearchForm />
+            </h1>
             <div className="container">
                 <div className="row">
                     {ads?.map(ad => (

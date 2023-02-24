@@ -1,4 +1,9 @@
+import { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import queryString from 'query-string';
 
 import PriceDropdown from '../misc/PriceDropdown';
 import { GOOGLE_PLACES_KEY } from '../../config';
@@ -6,56 +11,83 @@ import { useSearch } from '../../context/search';
 
 export default function SearchForm() {
     const [search, setSearch] = useSearch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    function buyBtn() {
-        setSearch(prevState => {
-            // reset to all price if action changes
-            if(prevState.action === "Rent") {
-                return {
-                    ...prevState,
-                    action: "Buy",
-                    price: "All price",
-                    priceRange: [0, 10000000]
-                };
+    function actionBtn(action) {
+        return function() {
+            setSearch(prevState => {
+                if(prevState.action === "Rent") {
+                    return {
+                        ...prevState,
+                        action,
+                        price: "All price",
+                        priceRange: [0, 10000000]
+                    };
+                }
+
+                if(prevState.action === "Buy") {
+                    return {
+                        ...prevState,
+                        action,
+                        price: "All price",
+                        priceRange: [0, 10000]
+                    };
+                }
+            });
+        }
+    }
+
+    function typeBtn(type) {
+        return function() {
+            type === "House" ?? "Land" 
+            setSearch(prevState => ({ ...prevState, type }));
+        }
+    }
+
+    async function handleSearch() {
+        setSearch(prevState => ({ ...prevState, loading: true }));
+        try {
+            const { results, page, price, loading, ...rest} = search;
+            const query = queryString.stringify(rest);
+
+            //check if address has been entered
+            if(!search.address) return toast.error("Please tell us the location.");
+
+            const { data } = await axios.get(`/search?${query}`);
+            if(data.error) {
+                toast.error(data.error);
+                return;
             }
-            return {
-                ...prevState,
-                action: "Buy"
-            };
-        });
-    }
 
-    function rentBtn() {
-        setSearch(prevState => {
-            // reset to all price if action changes
-            if(prevState.action === "Buy") {
-                return {
-                    ...prevState,
-                    action: "Rent",
-                    price: "All price",
-                    priceRange: [0, 10000]
-                };
+            setSearch(prevState => ({
+                ...prevState,
+                results: data,
+                loading: false
+            }));
+
+            if(location.pathname !== '/') {
+                navigate('/');
+            } else {
+                setSearch(prevState => ({ ...prevState, page: location.pathname }));
             }
-            return {
-                ...prevState,
-                action: "Rent"
-            };
-        });
+        } catch (err) {
+            console.log(err);
+            setSearch(prevState => ({ ...prevState, loading: false }));
+        }
     }
 
-    function houseBtn() {
-        setSearch(prevState => ({
-            ...prevState,
-            type: "House"
-        }));
-    }
+    useEffect(function() {
+        let action = 'Buy';
+        if (location.pathname === '/buy') action = "Buy";
+        if (location.pathname === '/rent') action = "Rent";
 
-    function landBtn() {
-        setSearch(prevState => ({
-            ...prevState,
-            type: "Land"
+        setSearch(prevState => ({ 
+            ...prevState, 
+            action,
+            page: location.pathname 
         }));
-    }
+    }, [location.pathname]);
 
     return (
         <>
@@ -69,34 +101,36 @@ export default function SearchForm() {
                                 defaultInputValue: search?.address,
                                 placeholder: "Search for address..",
                                 onChange: function ({ value }) {
-                                    setSearch({
-                                        ...search, 
+                                    setSearch(prevState => ({
+                                        ...prevState, 
                                         address: value.description 
-                                    });
+                                    }));
                                 }
                             }} 
                         />
                     </div>
                 </div>
                 <div className="d-flex justify-content-center mt-3">
-                    <button className="btn btn-primary col-lg-2 square" onClick={buyBtn}>
-                        {search.action === "Buy" ? "✅ Buy" : "Buy"}
-                    </button>
-                    <button className="btn btn-primary col-lg-2 square" onClick={rentBtn}>
-                        {search.action === "Rent" ? "✅ Rent" : "Rent"}
-                    </button>
-                    <button className="btn btn-primary col-lg-2 square" onClick={houseBtn}>
+                    {location.pathname === '/' && (
+                        <>
+                            <button className="btn btn-primary col-lg-2 square" onClick={actionBtn("Buy")}>
+                                {search.action === "Buy" ? "✅ Buy" : "Buy"}
+                            </button>
+                            <button className="btn btn-primary col-lg-2 square" onClick={actionBtn("Rent")}>
+                                {search.action === "Rent" ? "✅ Rent" : "Rent"}
+                            </button>
+                        </>
+                    )}
+                    <button className="btn btn-primary col-lg-2 square" onClick={typeBtn("House")}>
                         {search.type === "House" ? "✅ House" : "House"}
                     </button>
-                    <button className="btn btn-primary col-lg-2 square" onClick={landBtn}>
+                    <button className="btn btn-primary col-lg-2 square" onClick={typeBtn("Land")}>
                         {search.type === "Land" ? "✅ Land" : "Land"}
                     </button>
-                    <PriceDropdown search={search} setSearch={setSearch} />
-                    <button className="btn btn-danger col-lg-2 square">Search</button>
+                    <PriceDropdown />
+                    <button className="btn btn-danger col-lg-2 square" onClick={handleSearch}>Search</button>
                 </div>
             </div>
-
-            <pre>{JSON.stringify(search, null, 4)}</pre>
         </>
     );
 }

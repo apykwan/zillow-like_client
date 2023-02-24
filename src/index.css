@@ -1,3 +1,10 @@
+.cover {
+    background-image: url('./assets/house_cover.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .active {
     color: white;
     background-color: #2196f3;

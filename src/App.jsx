@@ -11,7 +11,7 @@ import Login from './pages/Login';
 import AdView from './pages/AdView';
 import Agents from './pages/Agents';
 import Agent from './pages/Agent';
-import Search from './pages/Search';
+import NotFound from './pages/NotFound';
 import AccountActivate from './pages/auth/AccountActivate';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import AccessAccount from './pages/auth/AccessAccount';
@@ -41,7 +41,6 @@ export default function App() {
 						<Route path="/" element={<Home />} />
 						<Route path="/buy" element={<Buy />} />
 						<Route path="/rent" element={<Rent />} />
-						<Route path="/search" element={<Search />} />
 						<Route path="/agents" element={<Agents />} />
 						<Route path="/agent/:username" element={<Agent />} />
 						<Route path="/register" element={<Register />} />
@@ -63,6 +62,7 @@ export default function App() {
 							<Route path="/user/wishlist" element={<Wishlist />} />
 							<Route path="/user/enquiries" element={<Enquiries />} />
 						</Route>
+						<Route path="*" element={<NotFound />} />
 					</Routes>
 					<Footer />
 				</SearchProvider>

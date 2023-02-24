@@ -2,47 +2,56 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+import { useSearch } from '../context/search';
 import AdCard from '../components/cards/AdCard';
 import SearchForm from '../components/forms/SearchForm';
-import { useAuth } from '../context/auth';
 
 export default function Home() {
-    const [auth, setAuth] = useAuth();
-    const [adsForSell, setAdsForSell] = useState([]);
-    const [adsForRent, setAdsForRent] = useState([]);
+    const [search, setSearch] = useSearch();
+    const [adsForSell, setAdsForSell] = useState();
 
     useEffect(() => {
         fetchAds();
     }, []);
 
-    async function fetchAds() {
+    const fetchAds = async () => {
         try {
             const { data } = await axios.get("/ads");
             setAdsForSell(data.adsForSell);
-            setAdsForRent(data.adsForRent);
         } catch (err) {
-            toast.error(err);
+            console.log(err);
         }
-    }
+    };
+
     return (
         <>
-            <SearchForm />
-            <h1 className="display-1 bg-primary text-light p-5">For Sell</h1>
+            <h1 className="cover p-5">
+                <SearchForm />
+            </h1>
+            
             <div className="container">
                 <div className="row">
-                    {adsForSell?.map(ad => (
-                        <AdCard key={ad._id} ad={ad} />
+                    <div className="col-md-12 text-center p-5">
+                        {search.results?.length > 0 ? `Found ${search.results?.length} results` : 'no Properties found.'}
+                    </div>
+                </div>
+                
+                {search?.results?.length < 1 ? (
+                    <div className="row">
+                        {adsForSell?.map((ad) => (
+                            <AdCard ad={ad} key={ad._id} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="row">
+                    {search.results?.map(item => (
+                        <AdCard ad={item} key={item._id} />
                     ))}
                 </div>
-            </div>
+                )}
+                
 
-            <h1 className="display-1 bg-primary text-light p-5">For Rent</h1>
-            <div className="container">
-                <div className="row">
-                    {adsForRent?.map(ad => (
-                        <AdCard key={ad._id} ad={ad} />
-                    ))}
-                </div>
+                
             </div>
         </>
     );

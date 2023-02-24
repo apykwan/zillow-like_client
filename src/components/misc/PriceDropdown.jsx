@@ -1,8 +1,9 @@
+import { useSearch } from '../../context/search';
 import { sellPrices, rentPrices } from '../../helpers/priceList';
 
-function List ({ search, setSearch }) {
+function Li () {
+    const [search, setSearch] = useSearch();
     const action = search.action === "Buy" ? sellPrices : rentPrices;
-
     return (
         <>
             {action.map(price => (
@@ -17,19 +18,19 @@ function List ({ search, setSearch }) {
                             });
                         }}>
                             {price.name}
-                        </a>
+                     </a>
                 </li>
             ))}
         </>
     );    
 }
 
-export default function PriceDropdown({ search, setSearch }) {
+export default function PriceDropdown() {
     return (
         <>
             <div className="dropdown">
                 <button
-                    className="btn btn-primary dropdown-toggle"
+                    className="btn btn-light dropdown-toggle"
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
@@ -37,7 +38,7 @@ export default function PriceDropdown({ search, setSearch }) {
                     &nbsp; Price range
                 </button>
                 <ul className="dropdown-menu">
-                    <List search={search} setSearch={setSearch} />
+                    <Li />
                 </ul>
             </div>
         </>

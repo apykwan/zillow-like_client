@@ -4,6 +4,7 @@ import toast from 'react-hot-toast'
 import axios from 'axios';
 
 import { useAuth } from '../../context/auth';
+import RedirectRoute from './RedirectRoute';
 
 export default function PrivateRoute() {
     const [auth, setAuth] = useAuth();
@@ -27,5 +28,5 @@ export default function PrivateRoute() {
         }
     }
 
-    return ok ? <Outlet /> : ""; 
+    return ok ? <Outlet /> : <RedirectRoute />; 
 }
